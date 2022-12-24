@@ -1,6 +1,8 @@
 ---
 - name: Deploy nitter
   hosts: nitter
+  vars:
+    project_folder: "{{ ansible_env.HOME }}/services/nitter"
 
   tasks:
     - name: Ensure project folder exists
@@ -12,23 +14,27 @@
     - name: Ensure compose file is up to date
       copy:
         src: ./nitter/docker-compose.yml
-        dest: "{{ ansible_env.HOME }}/projects/nitter/docker-compose.yml"
+        dest: "{{ project_folder }}/docker-compose.yml"
       tags:
         - run
-
     - name: Ensure conf is up to date
       copy:
         src: ./nitter/nitter.conf
-        dest: "{{ ansible_env.HOME }}/projects/nitter/nitter.conf"
-      register: copy_conf
+        dest: "{{ project_folder }}/nitter.conf"
+      register: conf_file
       tags:
         - run
-
     - name: Start
       community.docker.docker_compose:
-        project_src: "{{ ansible_env.HOME }}/projects/nitter/"
+        project_src: "{{ project_folder }}"
         state: present
-        recreate: "{{ 'always' if copy_conf.changed else 'smart' }}"
+        recreate: "{{ 'always' if conf_file.changed else 'smart' }}"
       tags:
         - run
-
+    - name: Restart
+      community.docker.docker_compose:
+        project_src: "{{ project_folder }}"
+        services: nitter
+        restarted: true
+      tags:
+        - restart
