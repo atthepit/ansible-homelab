@@ -3,8 +3,6 @@
   hosts: nitter
 
   tasks:
-    - include: ./tasks/docker.yml #< Ensure docker module is installed
-
     - name: Ensure compose file is up to date
       copy:
         src: ./nitter/docker-compose.yml
