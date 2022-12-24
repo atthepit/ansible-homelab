@@ -8,3 +8,6 @@ all:
     nitter:
       hosts:
         bay01:
+    wallabag:
+      hosts:
+        bay01:
