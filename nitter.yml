@@ -1,0 +1,28 @@
+---
+- name: Deploy nitter
+  hosts: nitter
+
+  tasks:
+    - include: ./tasks/docker.yml #< Ensure docker module is installed
+
+    - name: Ensure compose file is up to date
+      copy:
+        src: ./nitter/docker-compose.yml
+        dest: "{{ ansible_env.HOME }}/projects/nitter/docker-compose.yml"
+      tags:
+        - start
+
+    - name: Ensure conf is up to date
+      copy:
+        src: ./nitter/nitter.conf
+        dest: "{{ ansible_env.HOME }}/projects/nitter/nitter.conf"
+      tags:
+        - start
+
+    - name: Start
+      community.docker.docker_compose:
+        project_src: "{{ ansible_env.HOME }}/projects/nitter/"
+        state: present
+      tags:
+        - start
+

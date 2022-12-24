@@ -1,0 +1,10 @@
+all:
+  hosts:
+    bay01:
+      ansible_host: bay01.in.thepit.space
+      ansible_user: mesme
+      ansible_ssh_private_key_file: ~/.ssh/spectrex360
+  children:
+    nitter:
+      hosts:
+        bay01:
