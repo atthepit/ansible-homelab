@@ -1,5 +1,7 @@
 all:
   hosts:
+    acai:
+      ansible_host: acaiberry.int.thepit.space
     bay01:
       ansible_host: bay01.in.thepit.space
   children:
@@ -9,3 +11,6 @@ all:
     wallabag:
       hosts:
         bay01:
+    homer:
+      hosts:
+        acai:

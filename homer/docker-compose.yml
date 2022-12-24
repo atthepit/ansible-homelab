@@ -1,0 +1,12 @@
+version: "3.8"
+
+services:
+  homer:
+    image: b4bz/homer:v22.11.2
+    environment:
+      INIT_ASSETS: 0
+    volumes:
+      - ./assets:/www/assets
+    ports:
+      - 48469:8080
+    restart: always
