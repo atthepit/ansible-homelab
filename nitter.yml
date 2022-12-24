@@ -10,7 +10,7 @@
         src: ./nitter/docker-compose.yml
         dest: "{{ ansible_env.HOME }}/projects/nitter/docker-compose.yml"
       tags:
-        - start
+        - run
 
     - name: Ensure conf is up to date
       copy:
@@ -18,7 +18,7 @@
         dest: "{{ ansible_env.HOME }}/projects/nitter/nitter.conf"
       register: copy_conf
       tags:
-        - start
+        - run
 
     - name: Start
       community.docker.docker_compose:
@@ -26,5 +26,5 @@
         state: present
         recreate: "{{ 'always' if copy_conf.changed else 'smart' }}"
       tags:
-        - start
+        - run
 
