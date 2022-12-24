@@ -16,6 +16,7 @@
       copy:
         src: ./nitter/nitter.conf
         dest: "{{ ansible_env.HOME }}/projects/nitter/nitter.conf"
+      register: copy_conf
       tags:
         - start
 
@@ -23,6 +24,7 @@
       community.docker.docker_compose:
         project_src: "{{ ansible_env.HOME }}/projects/nitter/"
         state: present
+        recreate: "{{ 'always' if copy_conf.changed else 'smart' }}"
       tags:
         - start
 
