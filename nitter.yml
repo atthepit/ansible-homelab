@@ -3,6 +3,12 @@
   hosts: nitter
 
   tasks:
+    - name: Ensure project folder exists
+      file:
+        path: "{{ project_folder }}"
+        state: directory
+      tags:
+        - run
     - name: Ensure compose file is up to date
       copy:
         src: ./nitter/docker-compose.yml
