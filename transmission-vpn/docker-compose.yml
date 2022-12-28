@@ -1,0 +1,31 @@
+version: '3.3' 
+
+services: 
+  transmission-openvpn: 
+    image: haugene/transmission-openvpn:4.3.2
+    env_file: 
+      - .env
+    volumes: 
+      - downloads:/data 
+      - media:/media 
+    logging: 
+      driver: json-file 
+      options: 
+        max-size: 10m 
+    ports: 
+      - 9091:9091 
+    cap_add: 
+      - NET_ADMIN 
+    restart: always 
+
+volumes:
+  downloads:
+    driver_opts:
+      type: "nfs"
+      o: "addr=10.12.0.6,nolock,soft,rw"
+      device: ":/volume1/ws/downloads"
+  media:
+    driver_opts:
+      type: "nfs"
+      o: "addr=10.12.0.6,nolock,soft,rw"
+      device: ":/volume1/ws/media"

@@ -4,6 +4,8 @@ all:
       ansible_host: acaiberry.int.thepit.space
     bay01:
       ansible_host: bay01.in.thepit.space
+    torrent:
+      ansible_host: torrentsrv.int.thepit.space
     staging:
       ansible_host: staging.in.thepit.space
   children:
@@ -16,5 +18,8 @@ all:
     homer:
       hosts:
         acai:
+    transmission-vpn:
+      hosts:
+        torrent:
     init:
       hosts:
