@@ -23,3 +23,16 @@ all:
         torrent:
     init:
       hosts:
+        torrent:
+    radarr:
+      hosts:
+        torrent:
+    jackett:
+      hosts:
+        torrent:
+    sonarr:
+      hosts:
+        torrent:
+    lidarr:
+      hosts:
+        torrent:

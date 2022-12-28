@@ -1,0 +1,29 @@
+---
+version: "3"
+services:
+  lidarr:
+    image: lscr.io/linuxserver/lidarr:latest
+    container_name: lidarr
+    environment:
+      - PUID=0
+      - PGID=0
+      - TZ=Europe/Madrid
+    volumes:
+      - ./config:/config
+      - music:/music #optional
+      - downloads:/data #optional
+    ports:
+      - 8686:8686
+    restart: unless-stopped
+
+volumes:
+  downloads:
+    driver_opts:
+      type: "nfs"
+      o: "addr=10.12.0.6,nolock,soft,rw"
+      device: ":/volume1/ws/downloads"
+  music:
+    driver_opts:
+      type: "nfs"
+      o: "addr=10.12.0.6,nolock,soft,rw"
+      device: ":/volume1/ws/media/music"

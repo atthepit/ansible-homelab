@@ -1,0 +1,34 @@
+---
+- name: Deploy sonarr
+  hosts: sonarr
+  vars:
+    project_folder: "{{ ansible_env.HOME }}/services/sonarr"
+
+  tasks:
+    - name: Ensure project folder exists
+      file:
+        path: "{{ project_folder }}"
+        state: directory
+      tags:
+        - run
+    - name: Ensure compose file is up to date
+      copy:
+        src: ./sonarr/docker-compose.yml
+        dest: "{{ project_folder }}/docker-compose.yml"
+      tags:
+        - run
+    - name: Start
+      community.docker.docker_compose:
+        project_src: "{{ project_folder }}"
+        state: present
+        remove_orphans: true
+      tags:
+        - run
+    - name: Restart
+      community.docker.docker_compose:
+        project_src: "{{ project_folder }}"
+        services: sonarr
+        restarted: true
+      tags:
+        - restart
+
