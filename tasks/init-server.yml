@@ -1,0 +1,31 @@
+- name: Update server
+  become: true
+  apt:
+    update_cache: true
+    upgrade: dist
+
+- name: Ensure ssh key is allowed
+  become: true
+  authorized_key:
+    user: "{{ user }}"
+    key: https://raw.githubusercontent.com/atthepit/ansible/main/.ssh/id_rsa.pub
+    state: present
+
+- name: Ensure SSH password authentication is disabled
+  become: true
+  lineinfile:
+    dest: /etc/ssh/sshd_config
+    regexp: "#PasswordAuthentication yes"
+    line: "PasswordAuthentication no"
+    state: present
+  notify:
+    - restart sshd
+
+- name: Install useful tools
+  become: true
+  apt:
+    state: latest
+    pkg:
+      - qemu-guest-agent
+      - git
+      - neovim

@@ -4,6 +4,8 @@ all:
       ansible_host: acaiberry.int.thepit.space
     bay01:
       ansible_host: bay01.in.thepit.space
+    staging:
+      ansible_host: staging.in.thepit.space
   children:
     nitter:
       hosts:
@@ -14,3 +16,5 @@ all:
     homer:
       hosts:
         acai:
+    init:
+      hosts:

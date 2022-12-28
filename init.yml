@@ -1,0 +1,35 @@
+- hosts: init
+  vars:
+    user: "{{ ansible_user_id }}"
+    deb_architecture: 
+      "armv6l": "armhf"
+      "armv7l": "armhf"
+      "aarch64": "arm64"
+      "x86_64": "amd64"
+      "i386": "i386"
+
+  handlers:
+    - name: restart sshd
+      become: true
+      service:
+        name: sshd
+        state: restarted
+
+  tasks:
+    - name: Initialize server
+      tags: init
+      include_tasks:
+        file: ./tasks/init-server.yml
+        apply:
+          tags:
+            - init
+
+    - name: Ensure Docker is installed
+      tags:
+        - docker
+        - docker-sdk
+      include_tasks:
+        file: ./tasks/docker.yml
+        apply:
+          tags:
+            - docker

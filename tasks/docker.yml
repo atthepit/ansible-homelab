@@ -1,15 +1,63 @@
+- name: Install deps
+  become: true
+  apt:
+    pkg:
+      - apt-transport-https
+      - ca-certificates
+      - curl
+      - software-properties-common
+    update_cache: true
+
+- name: Add GPG key
+  become: true
+  apt_key:
+    url: "https://download.docker.com/{{ ansible_system | lower }}/{{ ansible_distribution | lower }}/gpg"
+    state: present
+
+- name: Add repo
+  become: true
+  apt_repository:
+    repo: "deb [arch={{ [ansible_architecture] | map('extract', deb_architecture) | first }}] https://download.docker.com/{{ ansible_system | lower }}/{{ ansible_distribution | lower }} {{ ansible_distribution_release | lower }} stable"
+    state: present
+
+- name: Install Docker CE
+  become: true
+  apt:
+    pkg:
+      - docker-ce
+      - docker-ce-cli 
+      - containerd.io
+      - docker-compose-plugin
+    state: latest
+    update_cache: true
+
+- name: Ensure user belongs to docker group
+  become: true
+  user:
+    name: "{{ user }}"
+    groups: docker
+    append: true
+  register: user_docker_group
+
+- name: Ensure docker runs on startup
+  become: true
+  systemd:
+    name: docker
+    state: started
+    enabled: true
+
 - name: Ensure PIP is installed
   become: true
   apt:
     name: python3-pip
     state: present
   tags:
-    - deps
+    - docker-sdk
+
 - name: Ensure Docker SDK is installed
   pip:
     name:
     - docker
     - docker-compose
   tags:
-    - deps
-
+    - docker-sdk
