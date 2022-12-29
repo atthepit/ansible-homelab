@@ -1,0 +1,43 @@
+---
+- name: Deploy nginx-certbot
+  hosts: nginx_certbot
+  vars:
+    project_folder: "{{ ansible_env.HOME }}/reverseproxy"
+
+  tasks:
+    - name: Ensure project folder exists
+      file:
+        path: "{{ project_folder }}"
+        state: directory
+      tags:
+        - run
+    - name: Ensure compose file is up to date
+      copy:
+        src: ./nginx-certbot/docker-compose.yml
+        dest: "{{ project_folder }}/docker-compose.yml"
+      tags:
+        - run
+    - name: Ensure config is updated
+      become: true
+      copy: 
+        src: ./nginx-certbot/conf/
+        dest: "{{ project_folder }}/nginx/conf"
+      tags:
+        - run
+      register: nginx_conf
+    - name: Start
+      community.docker.docker_compose:
+        project_src: "{{ project_folder }}"
+        state: present
+        remove_orphans: true
+        recreate: "{{ 'always' if nginx_conf.changed else 'smart' }}"
+      tags:
+        - run
+    - name: Restart
+      community.docker.docker_compose:
+        project_src: "{{ project_folder }}"
+        services: nginx-certbot
+        restarted: true
+      tags:
+        - restart
+

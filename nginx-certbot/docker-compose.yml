@@ -1,0 +1,14 @@
+version: '3.8'
+services:
+  reverse-proxy:
+    image: jonasal/nginx-certbot:3.2.2
+    container_name: always
+    restart: unless-stopped
+    environment:
+      CERTBOT_EMAIL: pparedes@pm.me
+    ports:
+      - 80:80
+      - 443:443
+    volumes:
+      - ./certbot/certs:/etc/letsencrypt
+      - ./nginx/conf:/etc/nginx/user_conf.d

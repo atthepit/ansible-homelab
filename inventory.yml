@@ -36,3 +36,6 @@ all:
     lidarr:
       hosts:
         torrent:
+    nginx_certbot:
+      hosts:
+        acai:
