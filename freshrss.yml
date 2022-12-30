@@ -19,7 +19,7 @@
         - run
     - name: Ensure conf is up to date
       copy:
-        src: ./freshrss/.env
+        src: ./freshrss/dotenv
         dest: "{{ project_folder }}/.env"
       register: conf_file
       tags:

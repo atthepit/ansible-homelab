@@ -19,7 +19,7 @@
         - run
     - name: Ensure conf is up to date
       copy:
-        src: ./mastodon/.env
+        src: ./mastodon/dotenv
         dest: "{{ project_folder }}/.env"
       register: conf_file
       tags:

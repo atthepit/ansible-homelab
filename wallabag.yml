@@ -19,8 +19,8 @@
         - run
     - name: Ensure conf is up to date
       copy:
-        src: ./wallabag/.env
-        dest: "{{ project_folder }}/.env.app"
+        src: ./wallabag/dotenv
+        dest: "{{ project_folder }}/.env"
       register: conf_file
       tags:
         - run
@@ -38,4 +38,3 @@
         restarted: true
       tags:
         - restart
-

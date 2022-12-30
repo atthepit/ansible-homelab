@@ -19,7 +19,7 @@
         - run
     - name: Ensure conf is up to date
       copy:
-        src: ./transmission-vpn/.env
+        src: ./transmission-vpn/dotenv
         dest: "{{ project_folder }}/.env"
       register: conf_file
       tags:
