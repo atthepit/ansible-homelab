@@ -44,3 +44,6 @@ all:
     freshrss:
       hosts:
         blue:
+    mastodon:
+      hosts:
+        bay01:

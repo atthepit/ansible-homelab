@@ -1,0 +1,41 @@
+---
+- name: Deploy mastodon
+  hosts: mastodon
+  vars:
+    project_folder: "{{ ansible_env.HOME }}/services/mastodon"
+
+  tasks:
+    - name: Ensure project folder exists
+      file:
+        path: "{{ project_folder }}"
+        state: directory
+      tags:
+        - run
+    - name: Ensure compose file is up to date
+      copy:
+        src: ./mastodon/docker-compose.yml
+        dest: "{{ project_folder }}/docker-compose.yml"
+      tags:
+        - run
+    - name: Ensure conf is up to date
+      copy:
+        src: ./mastodon/.env
+        dest: "{{ project_folder }}/.env"
+      register: conf_file
+      tags:
+        - run
+    - name: Start
+      community.docker.docker_compose:
+        project_src: "{{ project_folder }}"
+        state: present
+        remove_orphans: true
+        recreate: "{{ 'always' if conf_file.changed else 'smart' }}"
+      tags:
+        - run
+    - name: Restart
+      community.docker.docker_compose:
+        project_src: "{{ project_folder }}"
+        services: mastodon
+        restarted: true
+      tags:
+        - restart

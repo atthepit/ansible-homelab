@@ -1,0 +1,28 @@
+---
+version: "2.1"
+services:
+  mastodon:
+    image: lscr.io/linuxserver/mastodon:4.0.2
+    env_file:
+      - .env
+    volumes:
+      - ./app/config:/config
+    ports:
+      - 8085:80
+      - 8086:443
+    restart: unless-stopped
+    depends_on:
+      - redis
+      - db
+
+  redis:
+    image: redis:alpine3.17
+    restart: unless-stopped
+
+  db:
+    image: postgres
+    restart: unless-stopped
+    env_file:
+      - .env
+    volumes:
+      - ./db/data:/var/lib/postgresql/data

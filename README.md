@@ -12,7 +12,6 @@ https://dashboard.thepit.space
 
 I'm currently migrating all the docker services that I maintain to ansible. This are the ones that are still missing
 
-- mastodon
 - Full text RSS
 - pihole
 - Reddit RSS
