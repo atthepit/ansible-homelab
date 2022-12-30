@@ -2,7 +2,7 @@
 - name: Deploy nginx-certbot
   hosts: nginx_certbot
   vars:
-    project_folder: "{{ ansible_env.HOME }}/reverseproxy"
+    project_folder: "{{ ansible_env.HOME }}/services/nginx-certbot"
 
   tasks:
     - name: Ensure project folder exists
@@ -19,7 +19,7 @@
         - run
     - name: Ensure config is updated
       become: true
-      copy: 
+      copy:
         src: ./nginx-certbot/conf/
         dest: "{{ project_folder }}/nginx/conf"
       tags:
@@ -40,4 +40,10 @@
         restarted: true
       tags:
         - restart
-
+    - name: Back
+      community.docker.docker_compose:
+        project_src: "{{ project_folder }}"
+        services: nginx-certbot
+        state: absent
+      tags:
+        - stop
