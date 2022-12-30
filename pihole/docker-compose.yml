@@ -1,0 +1,15 @@
+version: "3"
+
+services:
+  pihole:
+    image: pihole/pihole:2022.12
+    ports:
+      - "53:53/tcp"
+      - "53:53/udp"
+      - "48820:48820/tcp"
+    env_file:
+      - .env
+    volumes:
+      - ./etc:/etc/pihole
+      - ./dnsmasq:/etc/dnsmasq.d
+    restart: unless-stopped

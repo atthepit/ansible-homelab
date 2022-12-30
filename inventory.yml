@@ -1,13 +1,13 @@
 all:
   hosts:
     acai:
-      ansible_host: acaiberry.int.thepit.space
+      ansible_host: acaiberry.in.thepit.space
     blue:
-      ansible_host: blueberry.int.thepit.space
+      ansible_host: blueberry.in.thepit.space
     bay01:
       ansible_host: bay01.in.thepit.space
     torrent:
-      ansible_host: torrentsrv.int.thepit.space
+      ansible_host: torrentsrv.in.thepit.space
     staging:
       ansible_host: staging.in.thepit.space
   children:
@@ -47,3 +47,7 @@ all:
     mastodon:
       hosts:
         bay01:
+    pihole:
+      hosts:
+        blue:
+        acai:

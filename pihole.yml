@@ -1,0 +1,48 @@
+---
+- name: Deploy pihole
+  hosts: pihole
+  vars:
+    project_folder: "{{ ansible_env.HOME }}/services/pihole"
+
+  tasks:
+    - name: Ensure project folder exists
+      file:
+        path: "{{ project_folder }}"
+        state: directory
+      tags:
+        - run
+    - name: Ensure compose file is up to date
+      copy:
+        src: ./pihole/docker-compose.yml
+        dest: "{{ project_folder }}/docker-compose.yml"
+      tags:
+        - run
+    - name: Ensure env is up to date
+      copy:
+        src: ./pihole/dotenv
+        dest: "{{ project_folder }}/.env"
+      register: env_file
+      tags:
+        - run
+    - name: Ensure config files are up to date
+      copy:
+        src: ./pihole/etc
+        dest: "{{ project_folder }}"
+      register: conf_files
+      tags:
+        - run
+    - name: Start
+      community.docker.docker_compose:
+        project_src: "{{ project_folder }}"
+        state: present
+        remove_orphans: true
+        recreate: "{{ 'always' if env_file.changed or conf_files.changed else 'smart' }}"
+      tags:
+        - run
+    - name: Restart
+      community.docker.docker_compose:
+        project_src: "{{ project_folder }}"
+        services: pihole
+        restarted: true
+      tags:
+        - restart
