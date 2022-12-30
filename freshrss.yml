@@ -1,0 +1,41 @@
+---
+- name: Deploy freshrss
+  hosts: freshrss
+  vars:
+    project_folder: "{{ ansible_env.HOME }}/services/freshrss"
+
+  tasks:
+    - name: Ensure project folder exists
+      file:
+        path: "{{ project_folder }}"
+        state: directory
+      tags:
+        - run
+    - name: Ensure compose file is up to date
+      copy:
+        src: ./freshrss/docker-compose.yml
+        dest: "{{ project_folder }}/docker-compose.yml"
+      tags:
+        - run
+    - name: Ensure conf is up to date
+      copy:
+        src: ./freshrss/.env
+        dest: "{{ project_folder }}/.env"
+      register: conf_file
+      tags:
+        - run
+    - name: Start
+      community.docker.docker_compose:
+        project_src: "{{ project_folder }}"
+        state: present
+        remove_orphans: true
+        recreate: "{{ 'always' if conf_file.changed else 'smart' }}"
+      tags:
+        - run
+    - name: Restart
+      community.docker.docker_compose:
+        project_src: "{{ project_folder }}"
+        services: freshrss
+        restarted: true
+      tags:
+        - restart

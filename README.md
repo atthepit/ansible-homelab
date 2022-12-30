@@ -1,7 +1,9 @@
 # ansible-homelab
+
 Homelab services configurations
 
 ## Dashboard
+
 You can get a link to (almost) all my running services here:
 
 https://dashboard.thepit.space
@@ -10,11 +12,9 @@ https://dashboard.thepit.space
 
 I'm currently migrating all the docker services that I maintain to ansible. This are the ones that are still missing
 
-- nginx / certbot
 - mastodon
 - Full text RSS
 - pihole
 - Reddit RSS
-- Fresh RSS
 - Libreddit
 - Invidious

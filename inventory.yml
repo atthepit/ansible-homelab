@@ -2,6 +2,8 @@ all:
   hosts:
     acai:
       ansible_host: acaiberry.int.thepit.space
+    blue:
+      ansible_host: blueberry.int.thepit.space
     bay01:
       ansible_host: bay01.in.thepit.space
     torrent:
@@ -39,3 +41,6 @@ all:
     nginx_certbot:
       hosts:
         acai:
+    freshrss:
+      hosts:
+        blue:
