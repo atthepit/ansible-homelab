@@ -1,0 +1,34 @@
+---
+- name: Deploy invidious
+  hosts: invidious
+  vars:
+    project_folder: "{{ ansible_env.HOME }}/services/invidious"
+
+  tasks:
+    - name: Clone repository
+      git:
+        repo: https://github.com/iv-org/invidious.git
+        dest: "{{ project_folder }}"
+        force: true
+      tags:
+        - run
+    - name: Ensure compose file is up to date
+      copy:
+        src: ./invidious/docker-compose.yml
+        dest: "{{ project_folder }}/docker-compose.yml"
+      tags:
+        - run
+    - name: Start
+      community.docker.docker_compose:
+        project_src: "{{ project_folder }}"
+        state: present
+        remove_orphans: true
+      tags:
+        - run
+    - name: Restart
+      community.docker.docker_compose:
+        project_src: "{{ project_folder }}"
+        services: invidious
+        restarted: true
+      tags:
+        - restart

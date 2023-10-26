@@ -1,8 +1,8 @@
-version: '3.8'
+version: "3.8"
 services:
   reverse-proxy:
-    image: jonasal/nginx-certbot:3.2.2
-    container_name: always
+    image: jonasal/nginx-certbot:5.0
+    container_name: nginx-certbot
     restart: unless-stopped
     environment:
       CERTBOT_EMAIL: pparedes@pm.me

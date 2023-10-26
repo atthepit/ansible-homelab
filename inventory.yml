@@ -44,6 +44,7 @@ all:
     freshrss:
       hosts:
         blue:
+        bay01:
     mastodon:
       hosts:
         bay01:
@@ -51,3 +52,6 @@ all:
       hosts:
         blue:
         acai:
+    invidious:
+      hosts:
+        bay01:

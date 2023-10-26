@@ -11,6 +11,7 @@
         state: directory
       tags:
         - run
+        - restart
     - name: Ensure compose file is up to date
       copy:
         src: ./nginx-certbot/docker-compose.yml
@@ -24,6 +25,7 @@
         dest: "{{ project_folder }}/nginx/conf"
       tags:
         - run
+        - restart
       register: nginx_conf
     - name: Start
       community.docker.docker_compose:

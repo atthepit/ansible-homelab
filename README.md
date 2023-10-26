@@ -16,4 +16,3 @@ I'm currently migrating all the docker services that I maintain to ansible. This
 - pihole
 - Reddit RSS
 - Libreddit
-- Invidious
